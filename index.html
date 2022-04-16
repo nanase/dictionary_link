@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Dictionary Link</title>
+  <style>
+    body {
+      background-color: #eee;
+      color: #111;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 16px;
+      line-height: 200%;
+    }
+
+    table {
+      border-collapse: collapse;
+      text-indent: initial;
+      border-spacing: 0px;
+    }
+
+    .length {
+      font-weight: bold;
+      padding: 0 20px;
+      vertical-align: top;
+    }
+
+    .position {
+      padding: 0 20px;
+      vertical-align: top;
+    }
+
+    .background-gray {
+      background-color: #ddd;
+    }
+
+    .char {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+      display: inline-block;
+      margin-right: 10px;
+      font-size: 120%;
+    }
+  </style>
+</head>
+
+<script>
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
+  function generateInput(name, value) {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = name;
+    input.value = value;
+
+    return input;
+  }
+
+  function generateRegex(length, position, character) {
+    return `^${'[^-]'.repeat(position)}${character}${'[^-]'.repeat(length - position - 1)}$`;
+  }
+
+  function generateForm(length, position, character) {
+    const name = `l${length}p${position}${character}`;
+
+    const form = document.createElement('form');
+    form.method = 'post';
+    form.className = 'char';
+    form.name = name;
+    form.action = 'https://www.visca.com/regexdict/';
+
+    const str = generateInput('str', generateRegex(length, position, character));
+    const case1 = generateInput('case1', 'on');
+    const fstr = generateInput('fstr', '');
+    const ifun = generateInput('ifun', 'if');
+    const ccg = generateInput('ccg', 'all');
+    const search = generateInput('search', 'Search');
+    const link = document.createElement('a');
+    link.href = `javascript:${name}.submit()`;
+    link.text = character.toUpperCase();
+
+    form.appendChild(str);
+    form.appendChild(case1);
+    form.appendChild(fstr);
+    form.appendChild(ifun);
+    form.appendChild(ccg);
+    form.appendChild(search);
+    form.appendChild(link);
+
+    return form;
+  }
+
+  function generateForms(length, position) {
+    const name = `l${length}p${position}`;
+    const parent = document.getElementById(name);
+
+    alphabet.forEach(c => parent.appendChild(generateForm(length, position, c)));
+  }
+</script>
+
+<body>
+  <table>
+    <tbody>
+      <tr>
+        <td rowspan="4" class="length">4文字</td>
+        <td class="position">1文字目</td>
+        <td id="l4p0">
+          <script>generateForms(4, 0)</script>
+        </td>
+      </tr>
+      <tr>
+        <td class="position">2文字目</td>
+        <td id="l4p1">
+          <script>generateForms(4, 1)</script>
+        </td>
+      </tr>
+      <tr>
+        <td class="position">3文字目</td>
+        <td id="l4p2">
+          <script>generateForms(4, 2)</script>
+        </td>
+      </tr>
+      <tr>
+        <td class="position">4文字目</td>
+        <td id="l4p3">
+          <script>generateForms(4, 3)</script>
+        </td>
+      </tr>
+
+      <tr class="background-gray">
+        <td rowspan="5" class="length">5文字</td>
+        <td class="position">1文字目</td>
+        <td id="l5p0">
+          <script>generateForms(5, 0)</script>
+        </td>
+      </tr>
+      <tr class="background-gray">
+        <td class="position">2文字目</td>
+        <td id="l5p1">
+          <script>generateForms(5, 1)</script>
+        </td>
+      </tr>
+      <tr class="background-gray">
+        <td class="position">3文字目</td>
+        <td id="l5p2">
+          <script>generateForms(5, 2)</script>
+        </td>
+      </tr>
+      <tr class="background-gray">
+        <td class="position">4文字目</td>
+        <td id="l5p3">
+          <script>generateForms(5, 3)</script>
+        </td>
+      </tr>
+      <tr class="background-gray">
+        <td class="position">5文字目</td>
+        <td id="l5p4">
+          <script>generateForms(5, 4)</script>
+        </td>
+      </tr>
+
+      <tr>
+        <td rowspan="6" class="length">6文字</td>
+        <td class="position">1文字目</td>
+        <td id="l6p0">
+          <script>generateForms(6, 0)</script>
+        </td>
+      </tr>
+      <tr>
+        <td class="position">2文字目</td>
+        <td id="l6p1">
+          <script>generateForms(6, 1)</script>
+        </td>
+      </tr>
+      <tr>
+        <td class="position">3文字目</td>
+        <td id="l6p2">
+          <script>generateForms(6, 2)</script>
+        </td>
+      </tr>
+      <tr>
+        <td class="position">4文字目</td>
+        <td id="l6p3">
+          <script>generateForms(6, 3)</script>
+        </td>
+      </tr>
+      <tr>
+        <td class="position">5文字目</td>
+        <td id="l6p4">
+          <script>generateForms(6, 4)</script>
+        </td>
+      </tr>
+      <tr>
+        <td class="position">6文字目</td>
+        <td id="l6p5">
+          <script>generateForms(6, 5)</script>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+
+</html>
