@@ -66,15 +66,15 @@
   }
 
   function generateRegex(length, position, character) {
-    return `^${'[^-]'.repeat(position)}${character}${'[^-]'.repeat(length - position - 1)}$`;
+    return `^${"[^-']".repeat(position)}${character}${"[^-']".repeat(length - position - 1)}$`;
   }
 
   function generatePrefixRegex(prefix, length) {
-    return `^${prefix}${'[^-]'.repeat(length - prefix.length)}$`;
+    return `^${prefix}${"[^-']".repeat(length - prefix.length)}$`;
   }
 
   function generatePostfixRegex(postfix, length) {
-    return `^${'[^-]'.repeat(length - postfix.length)}${postfix}$`;
+    return `^${"[^-']".repeat(length - postfix.length)}${postfix}$`;
   }
 
   function generateFormBase(name, regex, text) {
