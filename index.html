@@ -51,6 +51,8 @@
 
 <script>
   const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+  const prefixList = ['re', 'in', 'un', 'ex', 'no', 'pre', 'pro'];
+  const postfixList = ['sh', 'er', 'ion', 'ing'];
 
   function generateInput(name, value) {
     const input = document.createElement('input');
@@ -65,16 +67,22 @@
     return `^${'[^-]'.repeat(position)}${character}${'[^-]'.repeat(length - position - 1)}$`;
   }
 
-  function generateForm(length, position, character) {
-    const name = `l${length}p${position}${character}`;
+  function generatePrefixRegex(prefix, length) {
+    return `^${prefix}${'[^-]'.repeat(length - prefix.length)}$`;
+  }
 
+  function generatePostfixRegex(postfix, length) {
+    return `^${'[^-]'.repeat(length - postfix.length)}${postfix}$`;
+  }
+
+  function generateFormBase(name, regex, text) {
     const form = document.createElement('form');
     form.method = 'post';
     form.className = 'char';
     form.name = name;
     form.action = 'https://www.visca.com/regexdict/';
 
-    const str = generateInput('str', generateRegex(length, position, character));
+    const str = generateInput('str', regex);
     const case1 = generateInput('case1', 'on');
     const fstr = generateInput('fstr', '');
     const ifun = generateInput('ifun', 'if');
@@ -82,7 +90,7 @@
     const search = generateInput('search', 'Search');
     const link = document.createElement('a');
     link.href = `javascript:${name}.submit()`;
-    link.text = character.toUpperCase();
+    link.text = text;
 
     form.appendChild(str);
     form.appendChild(case1);
@@ -95,11 +103,46 @@
     return form;
   }
 
+  function generateForm(length, position, character) {
+    const name = `l${length}p${position}${character}`;
+    const regex = generateRegex(length, position, character);
+
+    return generateFormBase(name, regex, character.toUpperCase());
+  }
+
+  function generatePrefixForm(prefix, length) {
+    const name = `l${length}${prefix}`;
+    const regex = generatePrefixRegex(prefix, length)
+
+    return generateFormBase(name, regex, `${prefix}-`);
+  }
+
+  function generatePostfixForm(postfix, length) {
+    const name = `l${length}s${postfix}`;
+    const regex = generatePostfixRegex(postfix, length)
+
+    return generateFormBase(name, regex, `-${postfix}`);
+  }
+
   function generateForms(length, position) {
     const name = `l${length}p${position}`;
     const parent = document.getElementById(name);
 
     alphabet.forEach(c => parent.appendChild(generateForm(length, position, c)));
+  }
+
+  function generatePrefixForms(prefixes, length) {
+    const name = `prel${length}`;
+    const parent = document.getElementById(name);
+
+    prefixes.forEach(prefix => parent.appendChild(generatePrefixForm(prefix, length)));
+  }
+
+  function generatePostfixForms(postfixes, length) {
+    const name = `postl${length}`;
+    const parent = document.getElementById(name);
+
+    postfixes.forEach(postfix => parent.appendChild(generatePostfixForm(postfix, length)));
   }
 </script>
 
@@ -107,7 +150,19 @@
   <table>
     <tbody>
       <tr>
-        <td rowspan="4" class="length">4文字</td>
+        <td rowspan="6" class="length">4文字</td>
+        <td class="position">接頭辞</td>
+        <td id="prel4">
+          <script>generatePrefixForms(prefixList, 4)</script>
+        </td>
+      </tr>
+      <tr>
+        <td class="position">接尾辞</td>
+        <td id="postl4">
+          <script>generatePostfixForms(postfixList, 4)</script>
+        </td>
+      </tr>
+      <tr>
         <td class="position">1文字目</td>
         <td id="l4p0">
           <script>generateForms(4, 0)</script>
@@ -133,7 +188,19 @@
       </tr>
 
       <tr class="background-gray">
-        <td rowspan="5" class="length">5文字</td>
+        <td rowspan="7" class="length">5文字</td>
+        <td class="position">接頭辞</td>
+        <td id="prel5">
+          <script>generatePrefixForms(prefixList, 5)</script>
+        </td>
+      </tr>
+      <tr class="background-gray">
+        <td class="position">接尾辞</td>
+        <td id="postl5">
+          <script>generatePostfixForms(postfixList, 5)</script>
+        </td>
+      </tr>
+      <tr class="background-gray">
         <td class="position">1文字目</td>
         <td id="l5p0">
           <script>generateForms(5, 0)</script>
@@ -165,7 +232,19 @@
       </tr>
 
       <tr>
-        <td rowspan="6" class="length">6文字</td>
+        <td rowspan="8" class="length">6文字</td>
+        <td class="position">接頭辞</td>
+        <td id="prel6">
+          <script>generatePrefixForms(prefixList, 6)</script>
+        </td>
+      </tr>
+      <tr>
+        <td class="position">接尾辞</td>
+        <td id="postl6">
+          <script>generatePostfixForms(postfixList, 6)</script>
+        </td>
+      </tr>
+      <tr>
         <td class="position">1文字目</td>
         <td id="l6p0">
           <script>generateForms(6, 0)</script>
